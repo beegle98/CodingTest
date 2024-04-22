@@ -1,5 +1,6 @@
+// 수 색칠하기
 #include <bits/stdc++.h>
-
+  
 using namespace std;
 #define FASTIO cin.tie(0);cout.tie(0);ios::sync_with_stdio(false);
 typedef long long ll;
@@ -7,56 +8,35 @@ typedef vector<ll> vll;
 typedef vector<int> vi;
 typedef pair<int,int> pi;
 typedef pair<ll,ll> pll;
+  
+const int MAX = 2002;
 
-const int MAX = 101;
-int s[MAX][MAX],Min[MAX][MAX],n;
-int d[4][2]={{-1,0},{1,0},{0,-1},{0,1}};
- 
-queue<pi> q;
- 
-void bfs(pi v){
-    int x=v.first, y=v.second;
-    if(x==n-1 && y==n-1) return;
-     
-    for(int i=0;i<4;i++){
-        int wx,wy;
-        wx=x+d[i][0];
-        wy=y+d[i][1];
-        if(wx < 0 || wx >= n || wy < 0 || wy >= n) continue;
-        if(Min[wx][wy]==-1 || Min[wx][wy]>Min[x][y]+s[wx][wy]){
-            Min[wx][wy]=Min[x][y]+s[wx][wy];
-            q.push({wx,wy});
-        }
-         
-    }
-     
-}
- 
 int main(){
-    cin.tie(0);cout.tie(0);ios::sync_with_stdio(false);
-     
-    int test_case; cin >> test_case;
-    for(int t=1;t<=test_case;t++){
-         
-        int ans;
-        cin >> n;
-        for(int i=0;i<n;i++){
-            string str;
-            cin >> str;  
-            for(int j=0;j<n;j++){
-                s[i][j]=str[j]-'0';
-            }
-            memset(Min[i],-1,sizeof(int)*n);
+    FASTIO
+    int n,m,k,Min=200000000;
+    cin >> n >> m >> k;
+
+    vector<string> s;
+    int d[MAX][MAX],sum[MAX][MAX];
+
+    for(int i=0;i<n;i++){
+        string str; cin >> str;
+        s.push_back(str);
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            if(s[i][j]=='B') d[i][j]=1;
+            else if(s[i][j]=='W') d[i][j]=0;
         }
-        Min[0][0]=s[0][0];
-        q.push({0,0});
-        while(!q.empty()){
-            pi v=q.front();
-            q.pop();
-            bfs(v);
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            sum[i][j]=sum[i-1][j]+sum[i][j-1]-sum[i-1][j-1]+d[i][j];
         }
-        ans=Min[n-1][n-1];
-        cout << "#" << t << ' ' << ans << '\n';
+    }
+    for(int i=1;i<=n-k+1;i++){
+        for(int j=1;j<=m-k+1;j++){
+        }
     }
     return 0;
 }
