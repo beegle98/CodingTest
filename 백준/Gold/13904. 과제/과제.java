@@ -1,5 +1,8 @@
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 class num implements Comparable<num>{
 	int x;//남은 일수
