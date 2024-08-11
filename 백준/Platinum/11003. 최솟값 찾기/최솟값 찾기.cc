@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <queue>
+#include <deque>
 
 
 using namespace std;
@@ -17,13 +17,8 @@ typedef struct{
     int data;
     int index;
 }DATA;
-struct cmp{
-    bool operator()(const DATA& t1, const DATA& t2){
-        return t1.data > t2.data; // 내림차순
-    }
-};
 
-priority_queue<DATA,vector<DATA>,cmp> pq;
+deque<DATA> dq;
 
 int main()
 {
@@ -37,11 +32,12 @@ int main()
     
     for(int i=0;i<N;i++){
         
-        pq.push({arr[i],i});
+        while(!dq.empty() && dq.back().data > arr[i]) dq.pop_back();
+        dq.push_back({arr[i],i});
         
-        while(pq.top().index < i-L+1) pq.pop();
+        if(dq.front().index < i-L+1) dq.pop_front();
 
-        cout << pq.top().data << ' ';
+        cout << dq.front().data << ' ';
     }
     return 0;
 }
