@@ -39,7 +39,8 @@ void input(){
         }
         DP[state]++; // 바로 DP[]에 넣어서 v[]생략
     }
-    //v[mask] = "mask에 속하는 원소들을 갖고있는 상자의 수"
+    
+    //v[mask] = "mask에 속하는 원소들만 갖고있는 상자의 수"
 }
 
 int solve(){
@@ -48,20 +49,26 @@ int solve(){
     
     //for(int i=0;i< 1<<M;i++) DP[i]=v[i]; v[] 생략
     
+    
     // SOS DP
 	for (int i = 0; i < M; i++) for (int mask = 0; mask < 1 << M; mask++)
 		if (mask & 1 << i) DP[mask] = Add(DP[mask], DP[mask ^ 1 << i]);
-
-    // DP[mask] = "mask에 속하는 원소들을 가지고있지 않는 상자의 수"
+    // 현재 DP[mask]는 v[mask]에서 mask의 부분집합들의 합을 더했으므로 
+    // DP[mask] = "~mask에 속하는 원소들은 가지고 있지 않으면서
+    // mask에 속하는 원소들을 하나라도 가지고 있는 상자의 수"
+    // 즉, DP[~mask] = "mask에 속하는 원소들을 가지고있지 않는 상자의 수"
+    
+    
 	// get DP
-	for (int i = 0; i < 1 << M - 1; i++) swap(DP[i], DP[i ^ (1 << M) - 1]);
+    // 이해하기 편하게 mask를 역으로 바꿔줌 DP[mask] = DP[~mask]
+	for (int i = 0; i < 1 << (M - 1); i++) swap(DP[i], DP[i ^ (1 << M) - 1]); 
+    // 이제 DP[mask] = "mask에 속하는 원소들을 가지고있지 않는 상자의 수"
+
 	for (int i = 0; i < 1 << M; i++) DP2[i] = Pow(2, DP[i]);
-
-
     // DP2[mask]를 "mask에 속하는 원소들을 가지고있지 않도록 상자를 고르는 경우의 수"
     // DP[0] = 모든 경우의 수, DP[1] = 1을 가지고 있지 않은 모든 경우의 수
     // DP[2](11) = 1, 2를 가지고 있지 않은 모든 경우의 수
-    // 가지고 있지 않은 경우를 구하는 이유 = 가지고 있는 경우의 수는 구하기 어렵기 때문에
+    // 가지고 있지 않은 경우를 구하는 이유 = 가지고 있는 경우의 수는 한번에 구할 수 없기 때문에
 
     //포함 배제의 원리 => 비트 개수 순서대로 더하고 빼고(짝수는 더하고 홀수는 빼고)
     int sum=0;
