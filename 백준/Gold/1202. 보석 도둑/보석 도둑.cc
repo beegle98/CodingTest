@@ -12,38 +12,38 @@ typedef pair<int, int> pi;
 typedef pair<ll, ll> pll;
 #define all(v) v.begin(), v.end()
 
-priority_queue<pi> pq;
+priority_queue<int> pq;
 
 int main()
 {
-    FASTIO
-    int N, K; cin >> N >> K;
+	FASTIO
+		int N, K; cin >> N >> K;
 
-    vector<pi> arr(N); // 무게, 가격
-    vi bp(K); // 가방
-    for(int i=0;i<N;i++){
-        cin >> arr[i].first >> arr[i].second;
-    }
-    
-    for(int i=0;i<K;i++){
-        cin >> bp[i];
-    }
-    sort(all(arr));
-    sort(all(bp));
+	vector<pi> arr(N); // 무게, 가격
+	vi bp(K); // 가방
+	for (int i = 0; i < N; i++) {
+		cin >> arr[i].first >> arr[i].second;
+	}
 
-    ll sum=0;
-    int index=0;
-    for(int i=0;i<K;i++){
-        while(index < N && arr[index].first <= bp[i]){
-            pq.push({arr[index].second,arr[index].first});
-            index++;
-        }
-        if(!pq.empty()){
-            sum += pq.top().first;
-            pq.pop();
-        }
-        
-    }
-    cout << sum;
-    return 0;
+	for (int i = 0; i < K; i++) {
+		cin >> bp[i];
+	}
+	sort(all(arr));
+	sort(all(bp));
+
+	ll sum = 0;
+	int index = 0;
+	for (int i = 0; i < K; i++) {
+		while (index < N && arr[index].first <= bp[i]) {
+			pq.push(arr[index].second);
+			index++;
+		}
+		if (!pq.empty()) {
+			sum += pq.top();
+			pq.pop();
+		}
+
+	}
+	cout << sum;
+	return 0;
 }
