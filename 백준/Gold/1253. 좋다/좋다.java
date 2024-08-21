@@ -19,21 +19,19 @@ public class Main {
     	
     	int ans=0;
     	for(int i=0;i<n;i++) {
-    		for(int j=0;j<n;j++) {
-    			if(i==j) continue;
-    			if(i<j) {
-    				if(Arrays.binarySearch(num, i+1,j,num[i]-num[j])>=0
-    						|| Arrays.binarySearch(num, j+1,n,num[i]-num[j])>=0) {
-    					ans++;
-    					break;
-    				}
+    		int start = 0, end = n-1;
+    		while(start<end) {
+    			if(start==i) start++;
+    			else if(end==i) end--;
+    			else if(num[i] == num[start]+num[end]) {
+    				ans++;
+    				break;
     			}
-    			else {
-    				if(Arrays.binarySearch(num, j+1,i,num[i]-num[j])>=0
-    						|| Arrays.binarySearch(num, i+1,n,num[i]-num[j])>=0) {
-    					ans++;
-    					break;
-    				}
+    			else if(num[i] < num[start]+num[end]) {
+    				end--;
+    			}
+    			else if(num[i] > num[start]+num[end]) {
+    				start++;
     			}
     		}
     	}
