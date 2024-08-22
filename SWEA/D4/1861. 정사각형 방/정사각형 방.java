@@ -3,8 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-import javax.management.loading.PrivateClassLoader;
-
+/**
+ * 메모리 : 31,168kb
+ * 실행시간 : 159ms
+ */
 public class Solution {
 	static int N;
 	static int[][] MAP;
@@ -36,10 +38,7 @@ public class Solution {
 			Min = Integer.MAX_VALUE;
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
-					if (visited[i][j]) continue;
-					else {
-						solve(i,j);
-					}
+					if (!visited[i][j]) solve(i,j);
 				}
 			}
 			System.out.println("#" + tc + " " + Min + " " + Max);
@@ -70,6 +69,7 @@ public class Solution {
 			if(nx >=0 && nx < N && ny >=0 && ny < N
 					&& !visited[nx][ny] && MAP[x][y] - 1 == MAP[nx][ny]) {
 				dfsDown(nx,ny,cnt+1);
+				return;
 			}
 		}
 		if(cnt>Max) {
