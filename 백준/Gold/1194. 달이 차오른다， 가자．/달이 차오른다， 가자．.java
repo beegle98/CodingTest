@@ -4,7 +4,7 @@ public class Main {
     static int n, m, ans = -1;
     static String[] s;
     static boolean[][][] visited;
-
+    static Queue<MAP> q = new LinkedList<>();
     static class MAP {
         int x, y, key, cnt;
 
@@ -19,7 +19,11 @@ public class Main {
     static final int[] dx = {-1, 1, 0, 0};
     static final int[] dy = {0, 0, -1, 1};
 
-    public static void bfs(int x, int y, int key, int cnt, Queue<MAP> q) {
+    public static void bfs(MAP cur) {
+    	int x = cur.x;
+    	int y = cur.y;
+    	int key = cur.key;
+    	int cnt = cur.cnt;
         if (x < 0 || x >= n || y < 0 || y >= m || visited[x][y][key]) return;
 
         visited[x][y][key] = true;
@@ -57,12 +61,7 @@ public class Main {
         visited = new boolean[n][m][65];
 
         for (int i = 0; i < n; i++) {
-            s[i] = sc.next();
-        }
-
-        Queue<MAP> q = new LinkedList<>();
-
-        for (int i = 0; i < n; i++) {
+        	s[i] = sc.next();
             for (int j = 0; j < m; j++) {
                 if (s[i].charAt(j) == '0') {
                     q.add(new MAP(i, j, 0, 0));
@@ -71,8 +70,7 @@ public class Main {
         }
 
         while (!q.isEmpty()) {
-            MAP tmp = q.poll();
-            bfs(tmp.x, tmp.y, tmp.key, tmp.cnt, q);
+            bfs(q.poll());
         }
 
         System.out.println(ans);
