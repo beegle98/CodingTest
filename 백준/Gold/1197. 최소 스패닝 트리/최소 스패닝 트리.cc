@@ -12,6 +12,7 @@ int parent[V];
 vector<p> edges;
 int n,m;
 
+
 int find_root(int x) {
     if (parent[x] == x) return x;
     return parent[x] = find_root(parent[x]);        //경로 압축
@@ -20,8 +21,8 @@ int find_root(int x) {
 void union_root(int x, int y) {
     x = find_root(x);
     y = find_root(y);
- 
-    if (x != y) parent[y] = x;
+    parent[y] = x;
+    
 }
  
 vector<p> kruskal() {
