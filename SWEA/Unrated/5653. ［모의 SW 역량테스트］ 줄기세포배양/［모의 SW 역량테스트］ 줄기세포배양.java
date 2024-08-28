@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
-
+/*
+72,012 kb
+메모리
+390 ms
+실행시간
+ */
 public class Solution {
 	private static class Cell implements Comparable<Cell>{
 		int x;
