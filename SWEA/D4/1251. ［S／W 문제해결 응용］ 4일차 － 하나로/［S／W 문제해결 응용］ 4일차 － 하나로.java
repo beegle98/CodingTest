@@ -74,9 +74,9 @@ public class Solution {
 			
 			long cost;
 			
-			//cost = kruskal_pq();
-			cost = kruskal_v2();
-			//cost = prim();
+			//cost = kruskal();
+			cost = prim_v2();
+			//cost = prim_pq();
 			
 			double ans;
 			ans = E * cost;
@@ -84,45 +84,62 @@ public class Solution {
 		}
 		System.out.println(sb.toString());
 	}
-	private static long kruskal_v2() {
+	private static long prim_v2() {
 		
-		ArrayList<Integer> selected = new ArrayList<Integer>(V);
-		boolean[] visited = new boolean[V];
-		
-		selected.add(0);		//0번 정점부터 시작
-		visited[0] = true;
-		
-		//map 만들기
+		//간선의 정보를 저장할 인접행렬
 		long[][] map = new long[V][V];
 		for(int i = 0; i < V; i++) {
 			for (int j = i+1; j < V; j++) {
 				map[i][j] = map[j][i] = len(i,j);  
 			}
 		}
-		//시작정점을 뺀 나머지 정점을 선택하기 위해 남은 정점 만큼 반복
-		long res=0;
-		int index;
-		long min;
-		for (int i = 0; i < V-1; i++) {
-			min = Long.MAX_VALUE;	//가장 작은 가중치 값
-			index = 0;					//가중치가 가장 작은 정점의 index
-			for (Integer v : selected) {
-				//선택된 정점에서 갈수 있는 모든 정점의 가중치를 비교해서 최소가 되는 정점을 찾기 
-				for (int j = 0; j < V; j++) { //인접된 정점 탐색
-					// 정점이 인접되어 있고    인접된 정점이 방문하지 않은 정점이면서  가중치가 작다면  
-					if(map[v][j]!=0 && !visited[j] && map[v][j] <min) { 
-						min = map[v][j];		//새로운 최소값이므로  임시 선택
-						index = j;				//최소값에 해당하는 정점을 기억
-					}
+		//방문 여부 배열(트리에 포함된 정점 배열)
+		boolean[] visited = new boolean[V];
+		//선택한 정정과 타정점들간의 간선 비용 중 최소 간선 비용을 저장
+		long[] minEdge = new long[V];
+		Arrays.fill(minEdge, Long.MAX_VALUE);
+		
+		int[] p = new int[V];
+		
+		//임의의 노드  	>>>>>처음으로 탐색하는  노드는 0
+		minEdge[0] = 0;          // 선택된 노드에서 나가는 간선의 최소값을 저장하는 배열 
+		p[0] = -1;				 // index에 해당하는 정점이 선택한 정점 정보
+		
+		//최소값, 최소값의 위치, 간선비용의합 을 저장할 변수
+		long min,cost=0;
+		int minVertex;
+		
+		//시작정점을 뺀 나머지 정점 수 만큼 반복
+		int c =0;
+		for(c= 0; c < V; c++) {
+			min = Long.MAX_VALUE;
+			minVertex = -1;  //index 정점에서 출발하는 모든 간선에 대해 dist를 업데이트 
+			//step1. 트리 구성에 포함될 가장 유리한 정점 선택
+			//       => 미 방문(비트리) 정점 중 최소 간선 비용의 정점을 선택 
+			for(int i = 0; i < V; i++) {
+				if( !visited[i] && minEdge[i] < min ) {
+					min = minEdge[i];		//최소 비용 update
+					minVertex = i;			//최소 비용의 정점 선택
 				}
 			}
-			res += min;						//최소의 합을 구하기
-			selected.add(index);				//선택한 최저 가중치에 해당하는 정점을 추가 
-			visited[index] = true;				//선택했기 때문에 방문 표시 
+			
+			if(minVertex == -1) break;
+			cost += min;				//신장 트리 비용 누적
+			visited[minVertex] = true;  //트리 정점에 포함하기 위해 방문 체크
+			
+//			step2. 선택된 정점과 타 정점들의 간선 비용 비교하기  
+//			선택된 정점을 기준으로 비트리 정점들과의 간선 비용을 고려해서 최적 업데이트
+			for(int i = 0; i < V; i++) {
+				//방문 안한 정점  중             연결이 되어 있고      minEdge에 저장된 값보다  가중치가 낮다면
+				if( !visited[i] && map[minVertex][i]!=0 && map[minVertex][i]< minEdge[i] ) {
+					p[i] = minVertex;
+					minEdge[i] = map[minVertex][i];
+				}
+			}
 		}
-		return res;
+		return cost;
 	}
-	private static long kruskal_pq() {
+	private static long kruskal() {
 		parents = new int[V];
 		ArrayList<Edge> edges = new ArrayList<>();
 
@@ -145,7 +162,7 @@ public class Solution {
 		}
 		return res;
 	}
-	private static long prim() {
+	private static long prim_pq() {
 		PriorityQueue<Node> pq = new PriorityQueue<>();
 		boolean[] visited = new boolean[V];
 		long[] Dist = new long[V];
