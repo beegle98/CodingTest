@@ -1,53 +1,82 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
+/*
+ * 11812 KB
+ * 64    ms
+ */
 public class Main {
-	
-	static int N,M;
-	static long[][] dp;
-	static int[][] map;
-	static int[] outDegree;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
-		N = Integer.parseInt(br.readLine());
-		M = Integer.parseInt(br.readLine());
-		dp = new long[N+1][N+1];
-		map = new int[N+1][N+1];
-		outDegree = new int[N+1];
-		for(int i=0;i<M;i++) {
-			st = new StringTokenizer(br.readLine());
-			int a,b,c;
-			a = Integer.parseInt(st.nextToken());
-			b = Integer.parseInt(st.nextToken());
-			c = Integer.parseInt(st.nextToken());
-			outDegree[a]++;
-			map[a][b] = c;
-		}
-		for(int i=1;i<N;i++) {
-			if(outDegree[i]==0) {
-				dp[i][0]=1;
-				dp[i][i]=1;
-			}
-		}
-		recur(N);
-		for(int i=1;i<N;i++) {
-			if(outDegree[i]==0) {
-				System.out.println(i + " " + dp[N][i]);
-			}
+	static class Edge {
+		int node, weight;
+
+		public Edge(int node, int weight) {
+			this.node = node;
+			this.weight = weight;
 		}
 	}
-	private static long[] recur(int idx) {
-		if(dp[idx][0]>0) return dp[idx];
-		for(int i=1;i<N;i++) {
-			int cnt = map[idx][i];
-			if(cnt>0) {
-				long[] tmp = recur(i);
-				for(int j=0;j<N;j++) {
-					dp[idx][j] += cnt * tmp[j];
+	static int N;
+	static int[][] counts;
+	
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		
+		N = Integer.parseInt(br.readLine());
+		int M = Integer.parseInt(br.readLine());
+		
+		List<Edge>[] edges = new ArrayList[N + 1];
+		int[] inDegree = new int[N + 1];
+		counts = new int[N + 1][N + 1];
+		
+		for (int i = 1; i <= N; i++) {
+			edges[i] = new ArrayList<>();
+		}
+		
+		for (int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int to = Integer.parseInt(st.nextToken());
+			int from = Integer.parseInt(st.nextToken());
+			int weight = Integer.parseInt(st.nextToken());
+			
+			edges[from].add(new Edge(to, weight));
+			inDegree[to]++;
+		}
+		
+		Queue<Integer> queue = new LinkedList<>();
+		
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
+				counts[i][i] = 1;
+				queue.add(i);
+			}
+		}
+		
+		while (!queue.isEmpty()) {
+			int current = queue.poll();
+			
+			for (Edge edge : edges[current]) {
+				int next = edge.node;
+				int weight = edge.weight;
+				
+				sum(current, next, weight);
+				if (--inDegree[next] == 0) {
+					queue.add(next);
 				}
 			}
 		}
-		return dp[idx];
+		
+		StringBuilder answer = new StringBuilder();
+		for (int i = 1; i <= N; i++) {
+			if (counts[N][i] == 0) continue;
+			answer.append(i).append(" ").append(counts[N][i]).append("\n");
+		}
+		System.out.println(answer);
+		
+	}
+	
+	public static void sum(int from, int to, int weight) {
+		for (int i = 1; i <= N; i++) {
+			counts[to][i] += counts[from][i] * weight;
+		}
 	}
 }
