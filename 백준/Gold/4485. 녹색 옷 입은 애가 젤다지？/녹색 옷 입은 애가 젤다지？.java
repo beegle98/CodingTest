@@ -1,78 +1,80 @@
 import java.io.*;
+import java.lang.*;
 import java.util.*;
 
-public class Main {
-    
-    static final int INF = (int)1e9;
-    static final int[] dx = {1, 0, -1, 0};
-    static final int[] dy = {0, 1, 0, -1};
-    
-    static int n;
-    static int[][] MAP;
-    static int[][] Cost;
+/*
+ * 306012kb	1220ms
+ */
 
-    static class Node implements Comparable<Node> {
-        int x, y, cost;
-
-        Node(int x, int y, int cost) {
-            this.x = x;
-            this.y = y;
-            this.cost = cost;
-        }
-
-        @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.cost, other.cost);
-        }
-    }
-
-    static void dijkstra(Node start) {
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.add(start);
-
-        while (!pq.isEmpty()) {
-            Node now = pq.poll();
-
-            if (now.x == n - 1 && now.y == n - 1) break;
-            if (Cost[now.x][now.y] < now.cost) continue;
-
-            for (int i = 0; i < 4; i++) {
-                int nx = now.x + dx[i];
-                int ny = now.y + dy[i];
-                if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
-                int nCost = now.cost + MAP[nx][ny];
-                if (Cost[nx][ny] > nCost) {
-                    Cost[nx][ny] = nCost;
-                    pq.add(new Node(nx, ny, nCost));
-                }
-            }
-        }
-    }
-
+public class Main{//_4485_G4_녹색_옷_입은_애가_젤다지_이현지 {
+    static int N, ans;//, rob;
+    static int[][] map;
+    static int[] dr = {-1,1,0,0}, dc = {0,0,-1,1};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
         StringBuilder sb = new StringBuilder();
-        int tc = 0;
-        String line;
-
-        while ((line = br.readLine()) != null) {
-            n = Integer.parseInt(line);
-            if (n == 0) break;
-            
-            MAP = new int[n][n];
-            Cost = new int[n][n];
-            for (int i = 0; i < n; i++) {
+        N = Integer.parseInt(br.readLine());
+        int t=0;
+        while(N!=0) {
+        	t++;
+        	sb.append("Problem ").append(t).append(": ");
+        	map = new int[N][N];
+            StringTokenizer st;
+            for(int i=0; i<N; i++) {
             	st = new StringTokenizer(br.readLine());
-                for (int j = 0; j < n; j++) {
-                    MAP[i][j] = Integer.parseInt(st.nextToken());
-                    Cost[i][j] = INF;
-                }
+            	for(int j=0; j<N; j++) {
+            		map[i][j] = Integer.parseInt(st.nextToken());
+            	}
             }
-            dijkstra(new Node(0, 0, MAP[0][0]));
-            sb.append("Problem ").append(++tc).append(": ").append(Cost[n - 1][n - 1]).append('\n');
+            ans = getMinRob(0, 0, N-1, N-1);
+            sb.append(ans).append("\n");
+            N = Integer.parseInt(br.readLine());
         }
-
-        System.out.print(sb.toString());
+        System.out.println(sb);
     }
+
+	private static int getMinRob(int sr, int sc, int er, int ec) {
+		boolean[][] visited = new boolean[N][N];
+		final int INF = Integer.MAX_VALUE;
+		int[][] minRob = new int[N][N];
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->Integer.compare(a[2], b[2]));
+		
+		for(int i=0; i<N; i++) {
+			Arrays.fill(minRob[i], INF);
+		}
+		
+		minRob[sr][sc] = map[0][0];
+		pq.offer(new int[] {sr,sc,minRob[sr][sc]});
+		
+		while(!pq.isEmpty()) {
+			int[] o = pq.poll();
+			int r = o[0];
+			int c = o[1];
+			int rob = o[2];
+			
+			if(visited[r][c]) continue;
+			visited[r][c] = true;
+			if(r == er && c == ec) {
+//				for(int i=0; i<N; i++) {
+//					for(int j=0; j<N; j++) {
+//						System.out.print(minRob[i][j]+" ");
+//					}
+//					System.out.println();
+//				}
+//				System.out.println(rob);
+				return rob; // 도착
+			}
+			for(int d = 0; d<4; d++) {
+				int nr = r + dr[d];
+				int nc = c + dc[d];
+				if( 0 <= nr && nr < N && 0 <= nc && nc < N && !visited[nr][nc] && minRob[nr][nc] > rob + map[nr][nc]) {
+					minRob[nr][nc] = rob + map[nr][nc];
+					pq.offer(new int[] {nr, nc, minRob[nr][nc]});
+				}
+			}
+		}
+		return INF;
+		
+	}
 }
+
