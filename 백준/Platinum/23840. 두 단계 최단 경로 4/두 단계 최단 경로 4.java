@@ -11,10 +11,10 @@ public class Main {
 	        this.cost = cost;
 	    }
 	}
-    static final int MAX = 1 << 22;
+    static final int MAX = 1 << 21;
     static int fullBit;
-    static long[][] dp = new long[22][MAX];
-    static long[][] w = new long[22][22];
+    static long[][] dp = new long[21][MAX];
+    static long[][] w = new long[21][21];
     static final long INF= (long)1e12;
     static ArrayList<Node>[] list;
     static long[][] Dist;
@@ -51,6 +51,7 @@ public class Main {
 		st = new StringTokenizer(br.readLine());
 		pList[0] = start;
 		Dist[0] = dijkstra(start);
+		//시작점(start)도 넣어준다.
 		for(int i=1;i<P;i++) {
 			pList[i] = Integer.parseInt(st.nextToken());
 			Dist[i] = dijkstra(pList[i]);
@@ -69,8 +70,8 @@ public class Main {
 			}
 		}
         
-        // 다익스트라 때리고 거리 알아낸 다음 외판원 순회를 돌리면 
-        long ans = dfs(0,1);
+    // 다익스트라 때리고 거리 알아낸 다음 외판원 순회를 돌리면 된다. 
+    long ans = dfs(0,1);
 		if(ans >= INF) ans = -1;
 		System.out.println(ans);
     }
