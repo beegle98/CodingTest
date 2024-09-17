@@ -13,7 +13,6 @@ public class Main {
         int[] dp = new int[K+1];
         Arrays.fill(dp,INF);
         for(int i=0;i<N;i++) arr[i] = Integer.parseInt(br.readLine());
-        Arrays.sort(arr);
         dp[0]=0;
         for (int i = 0; i < N; i++){
     		for (int j = arr[i]; j <= K; j++){
