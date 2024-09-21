@@ -25,7 +25,8 @@ int main() {
 		return 0;
 	}
 	if(sum[n]==0){
-		ans = cnt * (cnt-1) * (cnt-2) * (cnt-3) / (4*3*2);
+		// (cnt-1)C3
+		ans = (cnt-1) * (cnt-2) * (cnt-3) / (3*2);
 		cout << ans;
 		return 0;
 	}
