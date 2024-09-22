@@ -21,7 +21,8 @@ int main() {
 		ans+=sum;
 	}
 	sort(v.begin(),v.end());
-	for(int i=0;i<n/2;i++) ans-=v[i]*2;
-	cout << ans/2;
+	ans/=2;
+	for(int i=0;i<n/2;i++) ans-=v[i];
+	cout << ans;
 	return 0;
 }
