@@ -8,7 +8,7 @@ typedef vector<int> vi;
 
 
 int main(){
-    int n,m; cin >> n >> m;
+    ll n,m; cin >> n >> m;
     cout << (n+m)*(n-m);
     return 0;
 }
