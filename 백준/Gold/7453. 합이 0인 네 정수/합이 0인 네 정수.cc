@@ -1,77 +1,67 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
+#include <string>
+#include <algorithm>
+#include <map>
+#include <unordered_map>
+#include <queue>
+
 using namespace std;
 
-int main()
-{
-	cin.tie(NULL);
-	ios::sync_with_stdio(false);
+#define FASTIO cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(false); 
 
-	int N;
-	cin >> N;
-	int* A = new int[N];
-	int* B = new int[N];
-	int* C = new int[N];
-	int* D = new int[N];
-	vector<int> v1;
-	vector<int> v2;
-	long long answer = 0;
-	for (int i = 0; i < N; i++)
-	{
-		cin >> A[i] >> B[i] >> C[i] >> D[i];
+typedef long long ll;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+int arr[4][4001];
+
+int main() {
+	FASTIO
+	int n; cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		int a, b, c, d; cin >> a >> b >> c >> d;
+		arr[0][i] = a;
+		arr[1][i] = b;
+		arr[2][i] = c;
+		arr[3][i] = d;
 	}
-	for (int i = 0; i < N; i++)
-	{
-		for (int j = 0; j < N; j++)
-		{
-			v1.push_back(A[i] + B[j]);
-			v2.push_back(C[i] + D[j]);
+	
+	ll ans = 0;
+	vi v1, v2;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			v1.push_back(arr[0][i] + arr[1][j]);
+			v2.push_back(arr[2][i] + arr[3][j]);
 		}
 	}
 	sort(v1.begin(), v1.end());
 	sort(v2.begin(), v2.end());
-	int start = 0;
-	int end = v2.size() - 1;
-	while (start < v1.size() && end>=0)
-	{
-		while (end >= 0 && v1[start] + v2[end] > 0)
-		{
-			end--;
-		}
-		if (end >= 0 && v1[start] + v2[end] == 0)
-		{
-			long long aCount = 1;
-			long long bCount = 1;
-			while (start < v1.size())
-			{
-				start++;
-				if (start< v1.size() && v1[start] == v1[start - 1])
-				{
-					aCount++;
-				}
-				else
-				{
-					start--;
-					break;
-				}
+
+	int idx = v1.size();
+	int l = 0, r = idx - 1;
+
+	while (l < idx && r >= 0) {
+		if (v1[l] + v2[r] == 0) {
+			ll cnt1 = 1, cnt2 = 1;
+			l++, r--;
+			while (l < idx && v1[l] == v1[l-1]) {
+				cnt1++;
+				l++;
 			}
-			while (end >= 0)
-			{
-				end--;
-				if (end>=0 && v2[end] == v2[end + 1])
-				{
-					bCount++;
-				}
-				else
-				{
-					break;
-				}
+			while (r >= 0 && v2[r] == v2[r+1]) {
+				cnt2++;
+				r--;
 			}
-			answer += aCount * bCount;
+			ans += cnt1 * cnt2;
 		}
-		start++;
+		else if (v1[l] + v2[r] < 0) l++;
+		else r--;
 	}
-	cout << answer << "\n";
+	cout << ans;
 	return 0;
 }
+
