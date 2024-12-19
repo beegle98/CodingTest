@@ -1,31 +1,29 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-#define FASTIO cin.tie(0);ios::sync_with_stdio(false);
+
 typedef long long ll;
 typedef vector<ll> vll;
 typedef vector<int> vi;
-typedef pair<int,int> pi;
-typedef pair<ll,ll> pll;
+typedef pair<int, int> pi;
+typedef pair<ll, ll> pll;
 
-int n;
-vi LIS,arr;
 
-int main(){
-    FASTIO
-    cin >> n;
-    for(int i=0;i<n;i++){
-        int x; cin >> x;
-        arr.push_back(x);
-    }
-    LIS.push_back(arr[0]);
-    for(int i=1;i<arr.size();i++){
-        if(LIS.back()<arr[i]){
-            LIS.push_back(arr[i]);
-        }
-        else{
-            auto itr = lower_bound(LIS.begin(),LIS.end(),arr[i]);
-            *itr = arr[i];
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int n; cin >> n;
+    vi s(n), LIS;
+    
+    for (int i = 0; i < n; i++) cin >> s[i];
+    LIS.push_back(s[0]);
+    for (int i = 1; i < n; i++) {
+        if (LIS.back() < s[i]) LIS.push_back(s[i]);
+        else {
+            int itr = lower_bound(LIS.begin(), LIS.end(),s[i])-LIS.begin();
+            LIS[itr] = s[i];
         }
     }
     cout << LIS.size();
