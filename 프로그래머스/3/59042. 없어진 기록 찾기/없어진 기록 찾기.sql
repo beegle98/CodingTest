@@ -1,0 +1,7 @@
+-- 코드를 입력하세요
+SELECT B.ANIMAL_ID, B.NAME
+from ANIMAL_OUTS B
+left join ANIMAL_INS A
+on A.ANIMAL_ID = B.ANIMAL_ID
+where A.ANIMAL_ID IS NULL
+order by B.ANIMAL_ID;
