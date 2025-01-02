@@ -40,8 +40,10 @@ public class Main {
                 s.set(idx-1,value);
             }
             else{
-                while(!pq.isEmpty() && s.get(pq.peek().idx)!=pq.peek().value){
-                    pq.poll();
+                while(!pq.isEmpty()){
+                    A a = pq.peek();
+                    if (s.get(a.idx)!=a.value) pq.poll();
+                    else break;
                 }
                 System.out.println(pq.peek().idx+1);
             }
