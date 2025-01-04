@@ -16,7 +16,7 @@ int main() {
     ll ans = (d / p + 1) * p; // 초기값 p만 쓴 경우
     for (int i = 0; i < min(q,d / p + 1); i++) {// d/p개까지만 고려
         ll Qamount = (d - p * i) / q;
-        for(int j=max(0ll,Qamount);j<Qamount+2;j++){
+        for(int j=Qamount;j<Qamount+2;j++){
             if (p * i + q * j < d) continue;
             ans = min(ans, p * i + q * j);
         }
