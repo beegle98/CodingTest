@@ -1,18 +1,18 @@
-# [Platinum IV] Lopsided Lineup - 23386 
+# [Platinum III] Lopsided Lineup - 23386 
 
 [문제 링크](https://www.acmicpc.net/problem/23386) 
 
 ### 성능 요약
 
-메모리: 2160 KB, 시간: 104 ms
+메모리: 90848 KB, 시간: 560 ms
 
 ### 분류
 
-수학, 정렬
+그리디 알고리즘, 수학, 정렬
 
 ### 제출 일자
 
-2024년 9월 23일 00:23:38
+2025년 3월 2일 19:41:32
 
 ### 문제 설명
 
