@@ -18,8 +18,8 @@ int main() {
 	for (int i = 1;i <= n;i++) {
 		int x; cin >> x;
 		sum[i] = sum[i-1] + x;
-		h[sum[i]] = 1;
 		ans += h[sum[i] - m];
+		h[sum[i]]++;
 	}
 	cout << ans;
 
